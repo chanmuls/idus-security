@@ -1,0 +1,42 @@
+server:
+  port: 9090
+
+spring:
+  datasource:
+    write:
+      driverClassName: org.h2.Driver
+      jdbcUrl: jdbc:h2:~/test
+      username: sa
+      password:
+      maximumPoolSize: 30
+      minimumIdle: 5
+      poolName: writedbidus
+      readOnly: false
+    read:
+      driverClassName: org.h2.Driver
+      jdbcUrl: jdbc:h2:~/test
+      username: sa
+      password:
+      maximumPoolSize: 30
+      minimumIdle: 5
+      poolName: readdbidus
+      readOnly: true
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        show_sql: fase
+        use_sql_comments: true
+        format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      path: /h2
+      enabled: true
+
+
+jwt:
+  secret: c2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dX
