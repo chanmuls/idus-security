@@ -32,20 +32,20 @@ public class Order {
     @GeneratedValue(generator = "orderIdGenerator")
     private String id;
 
-    @Column
+    @Column(name = "user_id")
     private Long userId;
 
-    @Column
+    @Column(name = "product_name")
     private String productName;
 
-    @Column
+    @Column(name = "payed_at")
     private LocalDateTime payedAt;
 
     @CreationTimestamp
-    @Column(updatable = false)
+    @Column(updatable = false, name = "created_at")
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 }

@@ -7,8 +7,8 @@ import com.idus.application.security.provider.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -32,7 +32,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	}
 
-	@Override
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/static/css/**, /static/js/**, *.ico"); // swagger
+        web.ignoring().antMatchers("/v2/api-docs", "/configuration/ui", "/swagger-resources", "/configuration/security", "/swagger-ui.html", "/webjars/**", "/swagger/**");
+    }
+
+    @Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable()
 
@@ -49,10 +55,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
-				.and()
-				.authorizeRequests()
-				.antMatchers("/signin", "/signup", "/reissuance", "/h2/**").permitAll()
-				.anyRequest().authenticated()
+                .and()
+                .authorizeRequests()
+                .antMatchers("/signin", "/signup", "/reissuance", "/h2/**", "/swagger-ui/**", "/swagger-resources/**").permitAll()
+                .anyRequest().authenticated()
 
 				.and()
 				.addFilterBefore(new JwtFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);;

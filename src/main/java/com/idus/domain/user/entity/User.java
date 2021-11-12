@@ -35,7 +35,7 @@ public class User {
     @Column
     private String password;
 
-    @Column
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     @Column(unique = true)
@@ -45,6 +45,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserGender gender;
 
+    @CollectionTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id")
+    )
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private Set<UserRole> roles;
@@ -54,11 +58,11 @@ public class User {
     private List<RefreshToken> refreshTokens = new ArrayList<>();
 
     @CreationTimestamp
-    @Column(updatable = false)
+    @Column(updatable = false, name = "created_at")
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column
+    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
     @Builder(builderMethodName = "signUpBuilder")
